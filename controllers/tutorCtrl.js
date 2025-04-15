@@ -10,7 +10,7 @@ const { responseGenerator,hashPassword,comparePassword,generateTokens } = requir
 
 
 
-const signup =async(req,res) => {
+const signup = async(req,res) => {
     try {
         const data = req.body
         const existingUser = await tutor_Mdl.findOne({ email: data.email });
@@ -53,7 +53,7 @@ const login = async(req,res) => {
         const {email,password} = req.body
         const user = await tutor_Mdl.findOne({email}).lean()
         if(user){
-            const isPasswordMatches = comparePassword(password,user.password)
+            const isPasswordMatches = await comparePassword(password,user.password)
             if(isPasswordMatches){
                 const tokens = generateTokens({email, name : user.name, id : user.id})
                 res.status(200).json({
